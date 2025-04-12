@@ -19,8 +19,15 @@ const corsOption = {
 app.use(express.json())
 app.use(cors(corsOption))
 app.use(cookieParser())
+
+// Routes
 app.use("/api/users", userRoutes) 
 app.use("/api/posts", postRoutes) 
+
+// Root route
+app.get("/", (req, res) => {
+    res.json({ message: "App is running" })
+})
 
 // Database connection
 connecttodb()
