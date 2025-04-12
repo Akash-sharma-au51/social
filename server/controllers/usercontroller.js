@@ -5,7 +5,7 @@ const bcypt = require('bcryptjs')
 
 // ✅ Register a new user
 const registerUser = async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, profilepic } = req.body;
 
     try {
         // ✅ Check if the user already exists
@@ -25,17 +25,19 @@ const registerUser = async (req, res) => {
         const newUser = await User.create({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            profilepic: profilepic || undefined
         });
 
         // ✅ Generate JWT token
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-
         res.status(201).json({
             user: {
                 email: newUser.email,
-                id: newUser._id
+                id: newUser._id,
+                username: newUser.username,
+                profilepic: newUser.profilepic
             },
             token,
             message: "User created successfully",
@@ -46,7 +48,8 @@ const registerUser = async (req, res) => {
         console.error("Error in registerUser:", error);
         res.status(500).json({
             message: "Server error",
-            success: false
+            success: false,
+            error: error.message
         });
     }
 };
@@ -84,7 +87,8 @@ const loginUser = async (req, res) => {
         res.status(200).json({
             user: {
                 email: user.email,
-                id: user._id
+                id: user._id,
+                profilepic: user.profilepic
             },
             token,
             message: "User logged in successfully",

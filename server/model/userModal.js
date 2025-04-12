@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
     username:{
@@ -17,8 +18,11 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
-        
     },
-})
+    profilepic:{
+        type:String,
+        default: 'https://res.cloudinary.com/demo/image/upload/v1674042687/default_profile_pic.png'
+    }
+});
 
 module.exports = mongoose.model('User', userSchema);
