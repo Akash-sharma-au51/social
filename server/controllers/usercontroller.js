@@ -104,11 +104,10 @@ const loginUser = async (req, res) => {
     }
 };
 
-// ✅ Logout user (Inform frontend to remove token)
 const logoutUser = async (req, res) => {
     try {
         res.status(200).json({
-            message: "User logged out successfully",
+            message: "User logged out successfully", 
             success: true
         });
 
