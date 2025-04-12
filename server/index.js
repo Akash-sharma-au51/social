@@ -5,16 +5,31 @@ const cookieParser = require('cookie-parser')
 const port = process.env.PORT
 const connecttodb = require("./db.config")
 
-
 const app = express()
 
 const corsOption = {
-    target:'*',
-    method: ["GET,POST,PUT,DELETE"]  
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }
 
 //middlewares
 app.use(express.json())
 app.use(cors(corsOption))
+app.use(cookieParser())
+
+// Database connection
+connecttodb()
+    .then(() => {
+        app.listen(port, () => {
+            console.log('app is running on port', port)
+        })
+    })
+    .catch((error) => {
+        console.error("Error occurred in running server:", error)
+    })
+
+
+    
 
 
